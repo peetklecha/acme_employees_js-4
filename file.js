@@ -22,16 +22,26 @@ const findEmployeeByName = (name, employeesArr) => {
     // where each element in the array is an Object
     // compare the object element's name against the arg name
     // and if so, return that Object
+    let employee = {};
     for (let i=0; i<employeesArr.length; i++) {
-        if (employeesArr[i].name === name) return employeesArr[i];
+        if (employeesArr[i].name === name) {
+            employee = employeesArr[i];
+            return employee;
+        }
     }
+    return employee;
 }
 
 const findManagerFor = (employeeObject, employeesArr) => {
     const managerId = employeeObject.managerId;
+    let manager = {};
     for (let i=0; i<employeesArr.length; i++) {
-        if (employeesArr[i].id === managerId) return employeesArr[i];
+        if (employeesArr[i].id === managerId) {
+            manager = employeesArr[i];
+            return manager;
+        }
     }
+    return manager;
 }
 
 const findCoworkersFor = (employeeObject, employeesArr) => {
@@ -44,6 +54,19 @@ const findCoworkersFor = (employeeObject, employeesArr) => {
         }
     }
     return coworkers;
+}
+
+const findManagementChainForEmployee = (employeeObject, employeesArr) => {
+    // given an employee, we can find their manager and push them onto the array
+    // using recursiion, we can continue doing this until we find an employee with no manager
+    // then we flip the array, and return that array
+    let output = [];
+    let employee = employeeObject;
+    while (Object.keys(employee).includes('managerId')) {
+        output.push(findManagerFor(employee, employeesArr));
+        employee = findManagerFor(employee, employeesArr);
+    }
+    return output.reverse();
 }
 
 spacer('findEmployeeByName Moe')
