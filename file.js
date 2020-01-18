@@ -27,6 +27,13 @@ const findEmployeeByName = (name, employeesArr) => {
     }
 }
 
+const findManagerFor = (employeeObject, employeesArr) => {
+    const managerId = employeeObject.managerId;
+    for (let i=0; i<employeesArr.length; i++) {
+        if (employeesArr[i].id === managerId) return employeesArr[i];
+    }
+}
+
 spacer('findEmployeeByName Moe')
 // given a name and array of employees, return employee
 console.log(findEmployeeByName('moe', employees));//{ id: 1, name: 'moe' }
