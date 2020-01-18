@@ -17,6 +17,16 @@ const spacer = (text)=> {
   console.log(`${stars} ${text} ${stars}`);
 }
 
+const findEmployeeByName = (name, employeesArr) => {
+    // iterate through the array of employees
+    // where each element in the array is an Object
+    // compare the object element's name against the arg name
+    // and if so, return that Object
+    for (let i=0; i<employeesArr.length; i++) {
+        if (employeesArr[i].name === name) return employeesArr[i];
+    }
+}
+
 spacer('findEmployeeByName Moe')
 // given a name and array of employees, return employee
 console.log(findEmployeeByName('moe', employees));//{ id: 1, name: 'moe' }
