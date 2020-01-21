@@ -18,10 +18,6 @@ const spacer = (text)=> {
 }
 
 const findEmployeeByName = (name, employeesArr) => {
-    // iterate through the array of employees
-    // where each element in the array is an Object
-    // compare the object element's name against the arg name
-    // and if so, return that Object
     let employee = {};
     for (let i=0; i<employeesArr.length; i++) {
         if (employeesArr[i].name === name) {
@@ -57,9 +53,6 @@ const findCoworkersFor = (employeeObject, employeesArr) => {
 }
 
 const findManagementChainForEmployee = (employeeObject, employeesArr) => {
-    // given an employee, we can find their manager and push them onto the array
-    // using recursiion, we can continue doing this until we find an employee with no manager
-    // then we flip the array, and return that array
     let output = [];
     let employee = employeeObject;
     while (Object.keys(employee).includes('managerId')) {
@@ -67,6 +60,59 @@ const findManagementChainForEmployee = (employeeObject, employeesArr) => {
         employee = findManagerFor(employee, employeesArr);
     }
     return output.reverse();
+}
+
+const findEmployees = (employeeObject, employeesArr) => {
+    const id = employeeObject.id;
+    return employeesArr.reduce((accumulator, currentValue) => {
+        if (Object.keys(currentValue).includes('managerId') && currentValue.managerId === id) {
+            accumulator.push(currentValue);
+        }
+        return accumulator;
+    }, []);
+}
+
+const generateManagementTree = (employeesArr) => {
+    let root;
+    for (let i=0; i<employeesArr.length; i++) {
+        // find the employee in the array that does not have a manager.
+        // this will be the root node of the tree
+        if (!Object.keys(employeesArr[i]).includes('managerId')) {
+            root = employeesArr[i];
+        } else {
+            root = employeesArr[0];
+        }
+    }
+    let employee = root;
+
+    employee.reports = [];
+    while (findEmployees(employee, employeesArr).length !== 0) {
+        employee.reports = findEmployees(employee, employeesArr)
+        employee = employee.reports[0];
+        generateManagementTree(employeesArr.slice(1));
+    }
+    return root;
+}
+
+const displayManagementTree = (tree) => {
+    let stem = '';
+    let employee = tree;
+    console.log(`${stem}${employee.name}`);
+    stem += '-';
+    if (employee.reports.length > 0) {
+        for (let i=0; i<employee.reports.length; i++) {
+            if (employee.reports[i].name !== undefined) {
+                console.log(`${stem}${employee.reports[i].name}`);
+            }
+            if (employee.reports[i].length > 0) {
+                for (let j=0; j<employee.reports[i].length; j++) {
+                    if (employee.reports[i].reports[j].name !== undefined) {
+                        console.log(`${stem}${employee.reports[i].name}`);
+                    }
+                }
+            }
+        }
+    }
 }
 
 spacer('findEmployeeByName Moe')
