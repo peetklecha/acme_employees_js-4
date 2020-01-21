@@ -95,24 +95,38 @@ const generateManagementTree = (employeesArr) => {
 }
 
 const displayManagementTree = (tree) => {
-    let stem = '';
-    let employee = tree;
-    console.log(`${stem}${employee.name}`);
-    stem += '-';
-    if (employee.reports.length > 0) {
-        for (let i=0; i<employee.reports.length; i++) {
-            if (employee.reports[i].name !== undefined) {
-                console.log(`${stem}${employee.reports[i].name}`);
-            }
-            if (employee.reports[i].length > 0) {
-                for (let j=0; j<employee.reports[i].length; j++) {
-                    if (employee.reports[i].reports[j].name !== undefined) {
-                        console.log(`${stem}${employee.reports[i].name}`);
-                    }
-                }
-            }
-        }
+    if (tree === undefined) {
+        return;
     }
+    let employee = tree;
+    console.log(employee.name);
+    while (employee.reports !== undefined && employee.reports.length !== 0) {
+        employee = employee.reports[0];
+        // if (employee.reports === undefined) return;
+        // else displayManagementTree(employee.reports[0]);
+        console.log(employee.name);
+    }
+    // if (tree !== null)
+    // console.log(`${stem}${employee.name}`);
+    // stem += '-';
+    // while (employee.reports !== undefined || employee.reports.length !== 0) {
+    //     console.log(employee.name);
+    //     employee = employee.reports[0];
+    // }
+    // if (employee.reports.length > 0) {
+    //     for (let i=0; i<employee.reports.length; i++) {
+    //         if (employee.reports[i].name !== undefined) {
+    //             console.log(`${stem}${employee.reports[i].name}`);
+    //         }
+    //         if (employee.reports[i].length > 0) {
+    //             for (let j=0; j<employee.reports[i].length; j++) {
+    //                 if (employee.reports[i].reports[j].name !== undefined) {
+    //                     console.log(`${stem}${employee.reports[i].name}`);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 spacer('findEmployeeByName Moe')
