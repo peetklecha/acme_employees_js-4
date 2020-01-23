@@ -84,7 +84,7 @@ const displayManagementTree = (tree) => {
         for (let i=0; i<branchLength; i++) {
             branch += '-';
         }
-        output += `${branch}` + employeeObj.name;
+        output = `${branch}` + employeeObj.name;
         console.log(output);
         if (employeeObj.reports !== undefined && employeeObj.reports.length > 0) {
             branchLength++;
