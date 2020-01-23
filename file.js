@@ -23,76 +23,44 @@ const findEmployeeByName = (name, employeesArr) => {
         if (employeesArr[i].name === name) {
             employee = employeesArr[i];
             return employee;
-        }
-    }
+        };
+    };
     return employee;
-}
+};
 
-const findManagerFor = (employeeObject, employeesArr) => {
-    const managerId = employeeObject.managerId;
+const findManagerFor = (employeeObj, employeesArr) => {
+    const managerId = employeeObj.managerId;
     let manager = {};
     for (let i=0; i<employeesArr.length; i++) {
         if (employeesArr[i].id === managerId) {
             manager = employeesArr[i];
             return manager;
-        }
-    }
+        };
+    };
     return manager;
-}
+};
 
-const findCoworkersFor = (employeeObject, employeesArr) => {
-    const managerId = employeeObject.managerId;
-    const id = employeeObject.id;
+const findCoworkersFor = (employeeObj, employeesArr) => {
+    const managerId = employeeObj.managerId;
+    const id = employeeObj.id;
     let coworkers = [];
     for (let i=0; i<employeesArr.length; i++) {
         if ((employeesArr[i].managerId === managerId) && (employeesArr[i].id !== id)) {
             coworkers.push(employeesArr[i]);
-        }
-    }
+        };
+    };
     return coworkers;
-}
+};
 
-const findManagementChainForEmployee = (employeeObject, employeesArr) => {
+const findManagementChainForEmployee = (employeeObj, employeesArr) => {
     let output = [];
-    let employee = employeeObject;
+    let employee = employeeObj;
     while (Object.keys(employee).includes('managerId')) {
         output.push(findManagerFor(employee, employeesArr));
         employee = findManagerFor(employee, employeesArr);
-    }
+    };
     return output.reverse();
-}
-
-const findEmployees = (employeeObject, employeesArr) => {
-    const id = employeeObject.id;
-    return employeesArr.reduce((accumulator, currentValue) => {
-        if (Object.keys(currentValue).includes('managerId') && currentValue.managerId === id) {
-            accumulator.push(currentValue);
-        }
-        return accumulator;
-    }, []);
-}
-
-// const generateManagementTree = (employeesArr) => {
-//     let root;
-//     for (let i=0; i<employeesArr.length; i++) {
-//         // find the employee in the array that does not have a manager.
-//         // this will be the root node of the tree
-//         if (!Object.keys(employeesArr[i]).includes('managerId')) {
-//             root = employeesArr[i];
-//         } else {
-//             root = employeesArr[0];
-//         }
-//     }
-//     let employee = root;
-
-//     employee.reports = [];
-//     while (findEmployees(employee, employeesArr).length !== 0) {
-//         employee.reports = findEmployees(employee, employeesArr)
-//         employee = employee.reports[0];
-//         generateManagementTree(employeesArr.slice(1));
-//     }
-//     return root;
-// }
+};
 
 const generateManagementTree = (employeesArr) => {
     let root = [];
@@ -100,54 +68,32 @@ const generateManagementTree = (employeesArr) => {
         employee.reports = [];
         if (!Object.keys(employee).includes('managerId')) {
             return root.push(employee);
-        }
+        };
         const managerIdx = employeesArr.findIndex(employeeIdx => employeeIdx.id === employee.managerId);
         if (employeesArr[managerIdx].reports === undefined) {
             return employeesArr[managerIdx].reports = employee;
-        }
+        };
         employeesArr[managerIdx].reports.push(employee);
-    })
+    });
     return root[0];
-}
+};
 
 const displayManagementTree = (tree) => {
-    // if (tree === undefined) {
-    //     return;
-    // }
-    // let str = '';
-    // let employee = tree;
-    // console.log(employee.name);
-    // while (employee.reports !== undefined && employee.reports.length !== 0) {
-    //     str += employee.name;
-    //     employee = employee.reports[0];
-    //     if (employee.reports === undefined) return;
-    //     else displayManagementTree(employee.reports[0]);
-    //     // console.log(employee.name);
-    // }
-    // console.log(str);
-    // return str;
-    // if (tree !== null)
-    // console.log(`${stem}${employee.name}`);
-    // stem += '-';
-    let employee = tree;
-    while (employee.reports !== undefined || employee.reports.length !== 0) {
-        console.log(employee.name);
-        employee = employee.reports[0];
-    }
-    // if (employee.reports.length > 0) {
-    //     for (let i=0; i<employee.reports.length; i++) {
-    //         if (employee.reports[i].name !== undefined) {
-    //             console.log(`${stem}${employee.reports[i].name}`);
-    //         }
-    //         if (employee.reports[i].length > 0) {
-    //             for (let j=0; j<employee.reports[i].length; j++) {
-    //                 if (employee.reports[i].reports[j].name !== undefined) {
-    //                     console.log(`${stem}${employee.reports[i].name}`);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
+    const subTreeDisplayer = (employeeObj, branchLength=0, output='') => {
+        let branch = '';
+        for (let i=0; i<branchLength; i++) {
+            branch += '-';
+        }
+        output += `${branch}` + employeeObj.name;
+        console.log(output);
+        if (employeeObj.reports !== undefined && employeeObj.reports.length > 0) {
+            branchLength++;
+            employeeObj.reports.forEach(employee => {
+                subTreeDisplayer(employee, branchLength);
+            });
+        };
+    };
+    subTreeDisplayer(tree);
 }
 
 spacer('findEmployeeByName Moe')
