@@ -23,10 +23,12 @@ const findEmployeeByName = (name, employeesArr) => {
         if (employeesArr[i].name === name) {
             employee = employeesArr[i];
             return employee;
+            //[pk] could just say "return employeesArr[i]" right?
         };
     };
     return employee;
 };
+//[pk] good! check out "find" though as a less verbose way to do this
 
 const findManagerFor = (employeeObj, employeesArr) => {
     const managerId = employeeObj.managerId;
@@ -39,6 +41,7 @@ const findManagerFor = (employeeObj, employeesArr) => {
     };
     return manager;
 };
+//[pk] good! again a couple more assignments than there needs to be, and again a use case for "find"
 
 const findCoworkersFor = (employeeObj, employeesArr) => {
     const managerId = employeeObj.managerId;
@@ -51,6 +54,7 @@ const findCoworkersFor = (employeeObj, employeesArr) => {
     };
     return coworkers;
 };
+//[pk] great! check out "filter"
 
 const findManagementChainForEmployee = (employeeObj, employeesArr) => {
     let output = [];
@@ -61,6 +65,7 @@ const findManagementChainForEmployee = (employeeObj, employeesArr) => {
     };
     return output.reverse();
 };
+//[pk] good!
 
 const generateManagementTree = (employeesArr) => {
     let root = [];
@@ -77,6 +82,9 @@ const generateManagementTree = (employeesArr) => {
     });
     return root[0];
 };
+//[pk] this technically works, but it relies heavily on the fact that the employees are already sorted!
+//[pk] see the solution for a more robust approach that relies on recursion.
+//[pk] also check your understanding for forEach -- "return" inside of a forEach does nothing!
 
 const displayManagementTree = (tree) => {
     const subTreeDisplayer = (employeeObj, branchLength=0, output='') => {
@@ -95,6 +103,7 @@ const displayManagementTree = (tree) => {
     };
     subTreeDisplayer(tree);
 }
+//[pk] good!
 
 spacer('findEmployeeByName Moe')
 // given a name and array of employees, return employee
